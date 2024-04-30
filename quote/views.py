@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .mixins import CheckQuoteManagerGroupMixin
-from .models import QuoteOffer, QuoteRequest
+from .models import QuoteOffer, QuoteProduct, QuoteRequest
 from .serializers import QuoteAttachmentSerializer, QuoteOfferSerializer, QuoteSerializer
 
 
@@ -21,17 +21,26 @@ class ListCreateQuoteView(CheckQuoteManagerGroupMixin, ListCreateAPIView):
     queryset = QuoteRequest.objects.all()
 
     def create(self, request, *args, **kwargs):
-        try:
-            attachments = request.data.pop("attachments", [])
-            products = request.data.pop("products", [])
-        except Exception:
-            attachments = []
-            products = []
+        data = request.data.copy()
 
-        serializer = self.serializer_class(data=request.data)
+        try:
+            attachments = data.pop("attachments", [])
+            product_data = data.pop("products", [])
+            product_data = json.loads(product_data[0])
+        except Exception as ex:
+            print(ex)
+            attachments = []
+            product_data = []
+
+        serializer = self.serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
 
         quote = serializer.save(user=request.user)
+
+        products = []
+        for product_info in product_data:
+            product = QuoteProduct.objects.create(**product_info)
+            products.append(product.pk)
 
         quote.products.set(products)
 
@@ -132,8 +141,7 @@ class RetrieveQuoteOfferView(CheckQuoteManagerGroupMixin, RetrieveAPIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-# CheckQuoteManagerGroupMixin
-class RetrieveUpdateInvoiceViewSet(ModelViewSet):
+class RetrieveUpdateInvoiceViewSet(CheckQuoteManagerGroupMixin, ModelViewSet):
     serializer_class = QuoteOfferSerializer
     queryset = QuoteOffer.objects.all()
     http_method_names = ["GET", "PUT"]

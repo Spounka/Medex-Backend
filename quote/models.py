@@ -40,13 +40,13 @@ class QuoteProduct(models.Model):
     quantity = models.PositiveBigIntegerField(_("Quantity"))
     unit = models.CharField(_("Unit"), max_length=50, choices=UNIT_CHOICES.choices)
 
-    product_price = models.DecimalField(
-        _("Price (Per Product)"), max_digits=10, decimal_places=2
-    )
+    # product_price = models.DecimalField(
+    #     _("Price (Per Product)"), max_digits=10, decimal_places=2
+    # )
 
-    tax = models.DecimalField(_("TAX"), max_digits=3, decimal_places=2, default=0)
+    # tax = models.DecimalField(_("TAX"), max_digits=3, decimal_places=2, default=0)
 
-    description = models.TextField(_("Description"))
+    notes = models.TextField(_("Notes"), null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -69,7 +69,7 @@ class QuoteRequest(models.Model):
         related_name="quote_requests_as_supplier",
     )
 
-    product = models.ManyToManyField(QuoteProduct)
+    products = models.ManyToManyField(QuoteProduct, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
 

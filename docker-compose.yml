@@ -8,6 +8,8 @@ services:
       - ./redis-data:/data
   backend:
     command: python3 manage.py runserver 0.0.0.0:8000
+    environment:
+      - PYTHONUNBUFFERED=1
     build:
       context: .
     ports:
