@@ -7,8 +7,12 @@ from django.db.models import Case, ExpressionWrapper, F, FloatField, Sum, When
 from django_filters.rest_framework import DjangoFilterBackend
 from openpyxl import load_workbook
 from rest_framework import filters, status, viewsets
-from rest_framework.generics import (DestroyAPIView, GenericAPIView,
-                                     ListAPIView, RetrieveUpdateDestroyAPIView)
+from rest_framework.generics import (
+    DestroyAPIView,
+    GenericAPIView,
+    ListAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -16,8 +20,12 @@ from .filters import ProductFilter
 from .mixins import CheckProductManagerGroupMixin, CheckSupplierAdminGroupMixin
 from .models import Brand, Category, PrivateCategory, Product
 from .pagination import ProductPagination
-from .serializers import (BrandSerializer, CategorySerializer,
-                          PrivateCategorySerializer, ProductSerializer)
+from .serializers import (
+    BrandSerializer,
+    CategorySerializer,
+    PrivateCategorySerializer,
+    ProductSerializer,
+)
 
 
 class CategoryViewSet(CheckProductManagerGroupMixin, viewsets.ViewSet):
@@ -130,6 +138,16 @@ class ProductViewSet(CheckProductManagerGroupMixin, viewsets.ModelViewSet):
                 return self.get_paginated_response(response_data)
 
         else:
+            random_categories = Category.objects.filter(is_featured=True).order_by("?")[:2]
+
+            random_categories_products = {}
+
+            for category in random_categories:
+                products = Product.objects.filter(category__parent=category)
+                random_categories_products[category.name] = list(products.values())
+
+            response_data["random_categories_products"] = random_categories_products
+
             response_data["products"] = self.get_serializer(queryset, many=True).data
 
         return Response(response_data)
