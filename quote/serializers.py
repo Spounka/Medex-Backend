@@ -15,16 +15,20 @@ class QuoteAttachmentSerializer(serializers.ModelSerializer):
 
 
 class QuoteProductSerializer(serializers.ModelSerializer):
+    unit_display = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = QuoteProduct
         fields = "__all__"
+
+    def get_unit_display(self, obj):
+        return obj.get_unit_display()
 
 
 class QuoteSerializer(serializers.ModelSerializer):
     user = UserSerializer(allow_null=True, required=False)
     attachments = QuoteAttachmentSerializer(many=True, read_only=True)
     created_since = serializers.SerializerMethodField()
-    unit_display = serializers.SerializerMethodField(read_only=True)
     # products = serializers.PrimaryKeyRelatedField(
     #     many=True, queryset=QuoteProduct.objects.all(), required=False
     # )
@@ -43,9 +47,6 @@ class QuoteSerializer(serializers.ModelSerializer):
 
     def get_created_since(self, obj):
         return timesince(obj.created, timezone.now())
-
-    def get_unit_display(self, obj):
-        return obj.get_unit_display()
 
     def get_due_date_display(self, obj):
         return obj.due_date.date()

@@ -162,7 +162,7 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.sku
+        return self.name
 
 
 class PrivateCategory(models.Model):
