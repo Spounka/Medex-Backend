@@ -6,7 +6,7 @@ from stats.utils.shared.get_monthly_transactions_by_status import (
     get_monthly_transactions_by_status,
 )
 
-from .models import Transaction, Wallet
+from .models import Wallet
 from .pagination import TransactionsPagination
 from .serializers import TransactionSerializer, WalletSerializer
 from .services import TransactionService

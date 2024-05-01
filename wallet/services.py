@@ -140,13 +140,13 @@ class TransactionService:
         qs = (
             Transaction.objects.filter(
                 wallet__id=wallet_id,
-                transaction_type=Transaction.TRANSACTION_TYPES_CHOICES.W,
+                transaction_type="W",
                 transaction_status=status,
             )
             if wallet_id is not None
             else Transaction.objects.filter(
                 wallet=wallet.id,
-                transaction_type=Transaction.TRANSACTION_TYPES_CHOICES.W,
+                transaction_type="W",
                 transaction_status=status,
             )
         )
@@ -169,10 +169,10 @@ class TransactionService:
         except Transaction.DoesNotExist:
             raise ValueError("Transaction not found")
 
-        if transaction.transaction_status == Transaction.TRANSACTION_STATUS_CHOICES.A:
+        if transaction.transaction_status == "A":
             return
 
-        transaction.transaction_status = Transaction.TRANSACTION_STATUS_CHOICES.A
+        transaction.transaction_status = "A"
         transaction.save()
 
         BalanceChangeService.handle_balance_change(transaction)
@@ -191,9 +191,9 @@ class TransactionService:
         except Transaction.DoesNotExist:
             raise ValueError("Transaction not found")
 
-        if transaction.transaction_status == Transaction.TRANSACTION_STATUS_CHOICES.D:
+        if transaction.transaction_status == "D":
             return
-        transaction.transaction_status = Transaction.TRANSACTION_STATUS_CHOICES.D
+        transaction.transaction_status = "D"
         transaction.save()
 
 
@@ -210,9 +210,9 @@ class BalanceChangeService:
                 raise ValueError("Transaction not found")
 
         wallet = transaction.wallet
-        if transaction.transaction_type == Transaction.TRANSACTION_TYPES_CHOICES.W:
+        if transaction.transaction_type == "W":
             BalanceChangeService.handle_withdrawal(transaction, wallet)
-        elif transaction.transaction_type == Transaction.TRANSACTION_TYPES_CHOICES.R:
+        elif transaction.transaction_type == "R":
             BalanceChangeService.handle_recharge(transaction, wallet)
         else:
             return BalanceChangeService.handle_purchase(transaction, wallet)
