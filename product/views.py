@@ -137,7 +137,9 @@ class ProductViewSet(CheckProductManagerGroupMixin, viewsets.ModelViewSet):
 
                 return self.get_paginated_response(response_data)
 
-        return Response(self.get_serializer(queryset, many=True))
+        response_data = self.get_serializer(queryset, many=True).data
+
+        return Response(response_data)
 
     def create(self, request, *args, **kwargs):
         try:
