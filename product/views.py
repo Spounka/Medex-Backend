@@ -19,6 +19,7 @@ from rest_framework.response import Response
 from .filters import ProductFilter
 from .mixins import CheckProductManagerGroupMixin, CheckSupplierAdminGroupMixin
 from .models import Brand, Category, PrivateCategory, Product
+from .pagination import ProductPagination
 from .serializers import (
     BrandSerializer,
     CategorySerializer,
@@ -81,6 +82,7 @@ class ProductViewSet(CheckProductManagerGroupMixin, viewsets.ModelViewSet):
         "blended_price",
     ]
     ordering = "name"
+    pagination_class = ProductPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -116,23 +118,26 @@ class ProductViewSet(CheckProductManagerGroupMixin, viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
+        response_data = {}
+
         if request.query_params.get("ads", "").lower() == "true":
             ads_queryset = Advertisement.objects.all()
             ads_serializer = AdvertisementSerializer(
                 ads_queryset, many=True, context={"request": request}
             )
 
-            serializer = self.get_serializer(queryset, many=True, context={"request": request})
+            response_data["ads"] = ads_serializer.data
 
-            data = {
-                "products": serializer.data,
-                "ads": ads_serializer.data,
-            }
+        if request.query_params.get("pagination", "").lower() == "true":
+            page = self.paginate_queryset(queryset)
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
 
-            return Response(data)
+                response_data["results"] = serializer.data
 
-        serializer = self.get_serializer(queryset, many=True, context={"request": request})
-        return Response(serializer.data)
+                return self.get_paginated_response(response_data)
+
+        return Response(self.get_serializer(queryset, many=True))
 
     def create(self, request, *args, **kwargs):
         try:
