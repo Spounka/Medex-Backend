@@ -3,7 +3,6 @@ from datetime import datetime
 
 from account.serializers import AddressSerializer
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -12,6 +11,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from .mixins import CheckQuoteManagerGroupMixin
 from .models import QuoteOffer, QuoteProduct, QuoteRequest
+from .pagination import QuoteOfferPagination
 from .serializers import QuoteAttachmentSerializer, QuoteOfferSerializer, QuoteSerializer
 
 
@@ -76,6 +76,7 @@ class ListCreateQuoteOfferView(CheckQuoteManagerGroupMixin, ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = QuoteOffer.objects.all()
     serializer_class = QuoteOfferSerializer
+    pagination_class = QuoteOfferPagination
 
     def create(self, request, *args, **kwargs):
         try:
