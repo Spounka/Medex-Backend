@@ -76,7 +76,7 @@ class QuoteRequest(models.Model):
     due_date = models.DateTimeField()
 
     def __str__(self):
-        return f"{self.user.full_name} -> {self.product}"
+        return f"{self.user.full_name}"
 
 
 class QuoteAttachment(models.Model):
