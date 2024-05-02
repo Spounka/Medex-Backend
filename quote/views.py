@@ -63,10 +63,17 @@ class ListCreateQuoteView(CheckQuoteManagerGroupMixin, ListCreateAPIView):
         now = datetime.now()
 
         if user.is_buyer:
-            return qs.filter(user__parent=user if user.parent else user, due_date__gte=now)
+            if user.parent is not None:
+                return qs.filter(user__parent=user, due_date__gte=now)
+            return qs.filter(user=user, due_date__gte=now)
         elif user.is_supplier:
+            if user.parent is not None:
+                return qs.filter(
+                    Q(supplier=user.parent) | Q(supplier__isnull=True),
+                    due_date__gte=now,
+                )
             return qs.filter(
-                Q(supplier=user.parent if user.parent else user) | Q(supplier__isnull=True),
+                Q(supplier=user) | Q(supplier__isnull=True),
                 due_date__gte=now,
             )
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -115,7 +122,7 @@ class ListCreateQuoteOfferView(CheckQuoteManagerGroupMixin, ListCreateAPIView):
                 .exclude(quote__user=self.request.user.parent)
             )
 
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return qs.none()
 
 
 class RetrieveQuoteOfferView(CheckQuoteManagerGroupMixin, RetrieveAPIView):
@@ -145,7 +152,7 @@ class RetrieveQuoteOfferView(CheckQuoteManagerGroupMixin, RetrieveAPIView):
 class RetrieveUpdateInvoiceViewSet(CheckQuoteManagerGroupMixin, ModelViewSet):
     serializer_class = QuoteOfferSerializer
     queryset = QuoteOffer.objects.all()
-    http_method_names = ["GET", "PUT"]
+    http_method_names = ["get", "patch"]
     permission_classes = [
         IsAuthenticated,
     ]
