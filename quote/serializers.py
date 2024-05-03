@@ -32,7 +32,7 @@ class QuoteSerializer(serializers.ModelSerializer):
     # products = serializers.PrimaryKeyRelatedField(
     #     many=True, queryset=QuoteProduct.objects.all(), required=False
     # )
-    # products_list = QuoteProductSerializer(many=True, read_only=True)
+    products = QuoteProductSerializer(many=True, read_only=True)
     due_date_display = serializers.SerializerMethodField(read_only=True)
     due_time_display = serializers.SerializerMethodField(read_only=True)
 
