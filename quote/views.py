@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .mixins import CheckQuoteManagerGroupMixin
-from .models import QuoteOffer, QuoteProduct, QuoteRequest
+from .models import OfferProduct, QuoteOffer, QuoteProduct, QuoteRequest
 from .pagination import QuoteOfferPagination
 from .serializers import QuoteAttachmentSerializer, QuoteOfferSerializer, QuoteSerializer
 
@@ -22,27 +22,23 @@ class ListCreateQuoteView(CheckQuoteManagerGroupMixin, ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
-
         try:
             attachments = data.pop("attachments", [])
             product_data = data.pop("products", [])
-            product_data = json.loads(product_data[0])
+
+            if not isinstance(product_data[0], dict):
+                product_data = json.loads(product_data[0])
         except Exception as ex:
             print(ex)
-            attachments = []
-            product_data = []
+            raise ValueError("There was an issue with products or with the attachments")
 
         serializer = self.serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
 
         quote = serializer.save(user=request.user)
 
-        products = []
         for product_info in product_data:
-            product = QuoteProduct.objects.create(**product_info)
-            products.append(product.pk)
-
-        quote.products.set(products)
+            QuoteProduct.objects.create(**product_info, quote=quote)
 
         for attachment in attachments:
             attachment_serializer = QuoteAttachmentSerializer(
@@ -89,24 +85,42 @@ class ListCreateQuoteOfferView(CheckQuoteManagerGroupMixin, ListCreateAPIView):
         try:
             data = request.data.copy()
 
-            delivery_address = AddressSerializer(data=json.loads(data["delivery_address"]))
+            try:
+                product_data = data.pop("products", [])
+                if not isinstance(product_data[0], dict):
+                    product_data = json.loads(product_data[0])
+            except Exception as ex:
+                print(ex)
+                raise ValueError("There was an issue with products or with the attachments")
+
+            delivery_address = AddressSerializer(
+                data=(
+                    data["delivery_address"]
+                    if isinstance(data["delivery_address"], dict)
+                    else json.loads(data["delivery_address"])
+                )
+            )
             delivery_address.is_valid(raise_exception=True)
             data["delivery_address"] = delivery_address.save().id
 
             serializer = self.serializer_class(data=data)
+
             serializer.is_valid(raise_exception=True)
-            offer = serializer.save()
+            offer = serializer.save(user=request.user)
             offer.user = request.user
             offer.save()
 
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            for product_info in product_data:
+                OfferProduct.objects.create(**product_info, offer=offer)
+
+            return Response(status=status.HTTP_200_OK)
 
         except Exception as ex:
             print(ex)
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = super().get_queryset().select_related("quote")  # Pre-fetch related quote
 
         if self.request.user.is_buyer and self.request.GET.get("id") is not None:
             return qs.filter(
@@ -156,27 +170,3 @@ class RetrieveUpdateInvoiceViewSet(CheckQuoteManagerGroupMixin, ModelViewSet):
     permission_classes = [
         IsAuthenticated,
     ]
-
-    # def get(self, request, pk=None):
-    #     if pk:
-    #         try:
-    #             instance = QuoteOffer.objects.get(pk=pk)
-    #             serializer = QuoteOfferSerializer(instance)
-    #             return Response(serializer.data)
-    #         except QuoteOffer.DoesNotExist:
-    #             return Response(status=status.HTTP_404_NOT_FOUND)
-    #     else:
-    #         queryset = QuoteOffer.objects.all()
-    #         serializer = QuoteOfferSerializer(queryset, many=True)
-    #         return Response(serializer.data)
-
-    # def put(self, request, pk):
-    #     try:
-    #         instance = QuoteOffer.objects.get(pk=pk)
-    #         serializer = QuoteOfferSerializer(instance, data=request.data)
-    #         if serializer.is_valid():
-    #             serializer.save()
-    #             return Response(serializer.data)
-    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    #     except QuoteOffer.DoesNotExist:
-    #         return Response(status=status.HTTP_404_NOT_FOUND)

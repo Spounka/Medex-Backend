@@ -1,11 +1,9 @@
 from account.serializers import UserSerializer
-from django.db.models import Q
 from django.utils import timezone
 from django.utils.timesince import timesince
-from product.models import Product
 from rest_framework import serializers
 
-from .models import QuoteAttachment, QuoteOffer, QuoteProduct, QuoteRequest
+from .models import OfferProduct, QuoteAttachment, QuoteOffer, QuoteProduct, QuoteRequest
 
 
 class QuoteAttachmentSerializer(serializers.ModelSerializer):
@@ -14,24 +12,15 @@ class QuoteAttachmentSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class QuoteProductSerializer(serializers.ModelSerializer):
-    unit_display = serializers.SerializerMethodField(read_only=True)
-
-    class Meta:
-        model = QuoteProduct
-        fields = "__all__"
-
-    def get_unit_display(self, obj):
-        return obj.get_unit_display()
-
-
 class QuoteSerializer(serializers.ModelSerializer):
     user = UserSerializer(allow_null=True, required=False)
     attachments = QuoteAttachmentSerializer(many=True, read_only=True)
     created_since = serializers.SerializerMethodField()
-    products = QuoteProductSerializer(many=True, read_only=True)
     due_date_display = serializers.SerializerMethodField(read_only=True)
     due_time_display = serializers.SerializerMethodField(read_only=True)
+
+    products = serializers.SerializerMethodField(read_only=True)
+    offers = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = QuoteRequest
@@ -53,12 +42,45 @@ class QuoteSerializer(serializers.ModelSerializer):
         formatted_time = due_time.strftime("%I:%M %p")
         return formatted_time
 
+    def get_products(self, obj):
+        qs = obj.quoteproduct_set.all()
+        serializer = QuoteProductSerializer(qs, many=True)
+        return serializer.data
+
+    def get_offers(self, obj):
+        qs = obj.quoteoffer_set.all()
+        serializer = QuoteOfferSerializer(qs, many=True)
+        return serializer.data
+
+
+class QuoteProductSerializer(serializers.ModelSerializer):
+    unit_display = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = QuoteProduct
+        fields = "__all__"
+
+    def get_unit_display(self, obj):
+        return obj.get_unit_display()
+
+
+class OfferProductSerializer(serializers.ModelSerializer):
+    unit_display = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = OfferProduct
+        fields = "__all__"
+
+    def get_unit_display(self, obj):
+        return obj.get_unit_display()
+
 
 class QuoteOfferSerializer(serializers.ModelSerializer):
     user = UserSerializer(allow_null=True, required=False)
-    quote_obj = serializers.SerializerMethodField(read_only=True)
     created_since = serializers.SerializerMethodField(read_only=True)
     status_display = serializers.SerializerMethodField(read_only=True)
+
+    products = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = QuoteOffer
@@ -70,7 +92,7 @@ class QuoteOfferSerializer(serializers.ModelSerializer):
     def get_status_display(self, obj):
         return obj.get_status_display()
 
-    def get_quote_obj(self, obj):
-        quote_obj = QuoteSerializer(obj.quote)
-
-        return quote_obj.data
+    def get_products(self, obj):
+        qs = obj.offerproduct_set.all()
+        serializer = OfferProductSerializer(qs, many=True)
+        return serializer.data

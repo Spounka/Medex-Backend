@@ -1,7 +1,7 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
-from .models import QuoteAttachment, QuoteOffer, QuoteRequest
+from .models import OfferProduct, QuoteAttachment, QuoteOffer, QuoteProduct, QuoteRequest
 
 
 @admin.register(QuoteRequest)
@@ -16,4 +16,14 @@ class QuoteOfferAdmin(ModelAdmin):
 
 @admin.register(QuoteAttachment)
 class QuoteAttachmentAdmin(ModelAdmin):
+    pass
+
+
+@admin.register(QuoteProduct)
+class QuoteProductAdmin(ModelAdmin):
+    pass
+
+
+@admin.register(OfferProduct)
+class OfferProductAdmin(ModelAdmin):
     pass

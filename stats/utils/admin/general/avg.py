@@ -47,7 +47,7 @@ def get_avg_income():
     )
 
     return {
-        "day": avg_money_paid_per_order_today,
-        "month": avg_money_paid_per_order_this_month,
-        "year": avg_money_paid_per_order_this_year,
+        "day": float("{:.2f}".format(avg_money_paid_per_order_today)),
+        "month": float("{:.2f}".format(avg_money_paid_per_order_this_month)),
+        "year": float("{:.2f}".format(avg_money_paid_per_order_this_year)),
     }

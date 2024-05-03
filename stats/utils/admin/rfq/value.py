@@ -10,12 +10,21 @@ def get_daily_accepted_offers_value():
 
     daily_accepted_offers_value = []
     for day in last_seven_days:
-        total_value = (
-            QuoteOffer.objects.filter(status="A", created__date=day)
-            .aggregate(total_value=Sum("total_price"))
-            .get("total_value", 0)
-        )
-        daily_accepted_offers_value.append(total_value or 0)
+        accepted_offers = QuoteOffer.objects.filter(
+            status="A", created__date=day
+        ).select_related("quote__quoteproduct_set")
+
+        if accepted_offers.exists():
+            total_value = (
+                accepted_offers.aggregate(
+                    total_new_price=Sum("quote__quoteproduct_set__new_price")
+                )["total_new_price"]
+                or 0
+            )
+        else:
+            total_value = 0
+
+        daily_accepted_offers_value.append(total_value)
 
     return {
         "days": [day.strftime("%A") for day in last_seven_days],
@@ -32,19 +41,26 @@ def get_monthly_accepted_offers_value():
 
     monthly_accepted_offers_value = []
     for month in range(1, 13):
-        total_value = (
-            QuoteOffer.objects.filter(
-                status="A", created__year=current_year, created__month=month
-            )
-            .aggregate(total_value=Sum("total_price"))
-            .get("total_value", 0)
+        accepted_offers = QuoteOffer.objects.filter(
+            status="A", created__year=current_year, created__month=month
         )
-        monthly_accepted_offers_value.append(float(total_value or 0))
 
-    for _ in range(len(monthly_accepted_offers_value), 12):
-        monthly_accepted_offers_value.append(0)
+        if accepted_offers.exists():
+            total_value = (
+                accepted_offers.aggregate(
+                    total_new_price=Sum("quote__quoteproduct_set__new_price")
+                )["total_new_price"]
+                or 0
+            )
+        else:
+            total_value = 0
 
-    return {"months": months_of_year, "values": monthly_accepted_offers_value}
+        monthly_accepted_offers_value.append(float(total_value))
+
+    return {
+        "months": months_of_year,
+        "values": monthly_accepted_offers_value,
+    }
 
 
 def get_yearly_accepted_offers_value():
@@ -60,11 +76,21 @@ def get_yearly_accepted_offers_value():
 
     yearly_accepted_offers_value = []
     for year in year_range:
-        total_value = (
-            QuoteOffer.objects.filter(status="A", created__year=year)
-            .aggregate(total_value=Sum("total_price"))
-            .get("total_value", 0)
-        )
-        yearly_accepted_offers_value.append(float(total_value or 0))
+        accepted_offers = QuoteOffer.objects.filter(status="A", created__year=year)
 
-    return {"years": list(year_range), "values": yearly_accepted_offers_value}
+        if accepted_offers.exists():
+            total_value = (
+                accepted_offers.aggregate(
+                    total_new_price=Sum("quote__quoteproduct_set__new_price")
+                )["total_new_price"]
+                or 0
+            )
+        else:
+            total_value = 0
+
+        yearly_accepted_offers_value.append(float(total_value))
+
+    return {
+        "years": list(year_range),
+        "values": yearly_accepted_offers_value,
+    }
