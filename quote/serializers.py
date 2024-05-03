@@ -29,9 +29,6 @@ class QuoteSerializer(serializers.ModelSerializer):
     user = UserSerializer(allow_null=True, required=False)
     attachments = QuoteAttachmentSerializer(many=True, read_only=True)
     created_since = serializers.SerializerMethodField()
-    # products = serializers.PrimaryKeyRelatedField(
-    #     many=True, queryset=QuoteProduct.objects.all(), required=False
-    # )
     products = QuoteProductSerializer(many=True, read_only=True)
     due_date_display = serializers.SerializerMethodField(read_only=True)
     due_time_display = serializers.SerializerMethodField(read_only=True)
