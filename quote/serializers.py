@@ -1,4 +1,6 @@
 from account.serializers import UserSerializer
+from company.models import Company
+from company.serializers import CompanySerializer
 from django.utils import timezone
 from django.utils.timesince import timesince
 from rest_framework import serializers
@@ -82,6 +84,10 @@ class QuoteOfferSerializer(serializers.ModelSerializer):
 
     products = serializers.SerializerMethodField(read_only=True)
 
+    quote_supplier = serializers.SerializerMethodField(read_only=True)
+    quote_created = serializers.SerializerMethodField(read_only=True)
+    quote_due_date = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = QuoteOffer
         fields = "__all__"
@@ -96,3 +102,21 @@ class QuoteOfferSerializer(serializers.ModelSerializer):
         qs = obj.offerproduct_set.all()
         serializer = OfferProductSerializer(qs, many=True)
         return serializer.data
+
+    def get_quote_supplier(self, obj):
+        try:
+            supplier = obj.quote.user
+            company_owner = supplier if supplier.parent is None else supplier.parent
+            company = Company.objects.get(user=company_owner)
+            serializer = CompanySerializer(company)
+
+            return serializer.data
+        except Exception as ex:
+            print(ex)
+            return None
+
+    def get_quote_created(self, obj):
+        return obj.quote.created
+
+    def get_quote_due_date(self, obj):
+        return obj.quote.due_date
