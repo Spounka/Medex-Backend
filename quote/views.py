@@ -22,6 +22,7 @@ class ListCreateQuoteView(CheckQuoteManagerGroupMixin, ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
+
         try:
             attachments = data.pop("attachments", [])
             product_data = data.pop("products", [])
