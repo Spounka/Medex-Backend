@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "chat",
     "contact",
     "company",
+    "opportunity",
     "order",
     "product",
     "quote",
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "django_filters",
     "rest_framework",
+    "taggit",
     "corsheaders",
     "mptt",
     # Whitenoise
@@ -205,3 +207,5 @@ UNFOLD = {
     },
     "DASHBOARD_CALLBACK": "dashboard.views.dashboard_callback",
 }
+
+TAGGIT_CASE_INSENSITIVE = True

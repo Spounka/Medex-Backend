@@ -10,6 +10,7 @@ urlpatterns = [
     path("api/contact/", include("contact.urls", namespace="contact")),
     path("api/quote/", include("quote.urls", namespace="quote")),
     path("api/wishlist/", include("wishlist.urls", namespace="wishlist")),
+    path("api/opportunity/", include("opportunity.urls", namespace="opportunity")),
     path("api/order/", include("order.urls", namespace="order")),
     path("api/chat/", include("chat.urls", namespace="chat")),
     path("api/stats/", include("stats.urls", namespace="stats")),
