@@ -29,6 +29,12 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 
 class RefreshBuyerActivationLink(GenericAPIView):
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    def get_serializer_class(self):
+        pass
+
     def post(self, request, *args, **kwargs):
         user = User.objects.get(id=request.data)
         token = RefreshToken.for_user(user).access_token
@@ -109,6 +115,12 @@ class SupplierRegisterView(CreateAPIView):
 
 
 class VerifyEmail(GenericAPIView):
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    def get_serializer_class(self):
+        pass
+
     def get(self, request, *args, **kwargs):
         token = request.GET.get("token")
 
@@ -136,6 +148,12 @@ class VerifyEmail(GenericAPIView):
 
 
 class PasswordResetView(GenericAPIView):
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    def get_serializer_class(self):
+        pass
+
     def post(self, request, *args, **kwargs):
         email = request.data["email"]
 
@@ -159,6 +177,12 @@ class PasswordResetView(GenericAPIView):
 
 
 class PasswordResetConfirmView(GenericAPIView):
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    def get_serializer_class(self):
+        pass
+
     def post(self, request, *args, **kwargs):
         token = request.GET.get("token")
 
@@ -259,6 +283,12 @@ class SupplierListView(ListAPIView):
 
 class UpdatePasswordAPIView(APIView):
     permission_classes = [IsAuthenticated]
+
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    def get_serializer_class(self):
+        pass
 
     def put(self, request):
         user = request.user

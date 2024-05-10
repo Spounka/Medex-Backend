@@ -229,6 +229,12 @@ class OrderItemShippingAdvanceView(CheckSupplierSaleManagerGroupMixin, generics.
         IsAuthenticated,
     ]
 
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    def get_serializer_class(self):
+        pass
+
     def post(self, request, *args, **kwargs):
         order = get_object_or_404(OrderItem, id=request.data.get("id"))
 
@@ -327,6 +333,12 @@ class OrderReturnApproveView(CheckSupplierSaleManagerGroupMixin, generics.Generi
         IsAuthenticated,
     ]
 
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    def get_serializer_class(self):
+        pass
+
     def post(self, request, *args, **kwargs):
         rr = get_object_or_404(ReturnRequest, id=kwargs["id"])
 
@@ -348,6 +360,12 @@ class OrderReturnDeclineView(CheckSupplierSaleManagerGroupMixin, generics.Generi
     permission_classes = [
         IsAuthenticated,
     ]
+
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    def get_serializer_class(self):
+        pass
 
     def post(self, request, *args, **kwargs):
         rr = get_object_or_404(ReturnRequest, id=kwargs["id"])

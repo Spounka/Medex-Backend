@@ -23,6 +23,12 @@ from .utils.supplier.get_top_buyers_statistics import get_top_buyers_statistics
 class BuyerStatsView(CheckBuyerAdminGroupMixin, GenericAPIView):
     permission_classes = [IsAuthenticated]
 
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    def get_serializer_class(self):
+        pass
+
     def get(self, request, *args, **kwargs):
         months, yearly_payments_per_month = get_yearly_payments_per_month(request.user)
         yearly_purchases_per_month = get_yearly_purchases_per_month(request.user)
@@ -43,6 +49,12 @@ class BuyerStatsView(CheckBuyerAdminGroupMixin, GenericAPIView):
 
 class SupplierStatsView(CheckSupplierAdminGroupMixin, GenericAPIView):
     permission_classes = [IsAuthenticated]
+
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    def get_serializer_class(self):
+        pass
 
     def get(self, request, *args, **kwargs):
         monthly_sales_count, monthly_sales_count_percentage = get_monthly_sales_count(

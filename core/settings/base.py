@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # 3rd Party Apps
     "django_extensions",
     "django_filters",
+    "drf_yasg",
     "rest_framework",
     "taggit",
     "corsheaders",
@@ -209,3 +210,5 @@ UNFOLD = {
 }
 
 TAGGIT_CASE_INSENSITIVE = True
+
+SWAGGER_SETTINGS = {"SECURITY_DEFINITIONS": {"Basic": {"type": "basic"}}}

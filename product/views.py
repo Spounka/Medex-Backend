@@ -332,6 +332,12 @@ class GetSupplierProductsView(CheckProductManagerGroupMixin, ListAPIView):
 class CreateProductExcelView(CheckProductManagerGroupMixin, GenericAPIView):
     permission_classes = [IsAuthenticated]
 
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    def get_serializer_class(self):
+        pass
+
     def post(self, request, *args, **kwargs):
         excel_file = request.FILES["excelFile"]
 

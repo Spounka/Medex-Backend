@@ -8,6 +8,7 @@ from rest_framework.response import Response
 
 from .mixins import CheckQuoteManagerGroupMixin
 from .models import Opportunity
+from .pagination import OpportunityPagination
 from .serializers import OpportunitySerializer
 
 
@@ -49,6 +50,7 @@ class OpportunityListView(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = OpportunitySerializer
     queryset = Opportunity.objects.order_by("-created")
+    pagination_class = OpportunityPagination
 
 
 class OpportunityDetailView(RetrieveUpdateDestroyAPIView):
