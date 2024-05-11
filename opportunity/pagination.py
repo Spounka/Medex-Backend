@@ -1,8 +1,7 @@
-from rest_framework.pagination import PageNumberPagination
+from rest_framework.pagination import CursorPagination
 
 
-class OpportunityPagination(PageNumberPagination):
-    page_size = 10
-    max_page_size = 20
-    page_query_param = "p"
-    page_size_query_param = "l"
+class OpportunityPagination(CursorPagination):
+    page_size = 25
+    cursor_query_param = "p"
+    ordering = "-created"
