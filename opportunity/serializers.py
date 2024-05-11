@@ -2,12 +2,15 @@ from account.serializers import AddressSerializer, UserSerializer
 from django.utils import timezone
 from django.utils.timesince import timesince
 from rest_framework import serializers
+from taggit.serializers import TaggitSerializer, TagListSerializerField
 
 from .models import Opportunity
 
 
-class OpportunitySerializer(serializers.ModelSerializer):
+class OpportunitySerializer(TaggitSerializer, serializers.ModelSerializer):
     user = UserSerializer(allow_null=True, required=False)
+
+    tags = TagListSerializerField()
 
     payment_method_display = serializers.SerializerMethodField(read_only=True)
     status_display = serializers.SerializerMethodField(read_only=True)
