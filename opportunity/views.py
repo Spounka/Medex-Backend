@@ -5,11 +5,12 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from taggit.models import Tag
 
 from .mixins import CheckQuoteManagerGroupMixin
 from .models import Opportunity
 from .pagination import OpportunityPagination
-from .serializers import OpportunitySerializer
+from .serializers import OpportunitySerializer, TagSerializer
 
 
 class OpportunityCreateView(CheckQuoteManagerGroupMixin, CreateAPIView):
@@ -65,3 +66,11 @@ class OpportunityDetailView(RetrieveUpdateDestroyAPIView):
         obj.save()
 
         return super().get(request, *args, **kwargs)
+
+
+class TagListView(ListAPIView):
+    permission_classes = [
+        AllowAny,
+    ]
+    serializer_class = TagSerializer
+    queryset = Tag.objects.all()

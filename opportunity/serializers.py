@@ -2,6 +2,7 @@ from account.serializers import AddressSerializer, UserSerializer
 from django.utils import timezone
 from django.utils.timesince import timesince
 from rest_framework import serializers
+from taggit.models import Tag
 from taggit.serializers import TaggitSerializer, TagListSerializerField
 
 from .models import Opportunity
@@ -62,3 +63,9 @@ class OpportunitySerializer(TaggitSerializer, serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation["delivery_address"] = AddressSerializer(instance.delivery_address).data
         return representation
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = "__all__"
