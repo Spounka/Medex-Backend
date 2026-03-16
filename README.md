@@ -4,8 +4,8 @@ Medex is a B2B marketplace platform for medical procurement where healthcare ins
 
 ## Setup
 
-- Clone this repository with: `git clone https://github.com/Spounka/Medex-Frontend.git`
-- Open the directory, in terminal with `cd Medex-Frontend`
+- Clone this repository with: `git clone https://github.com/Spounka/Medex-Backend.git`
+- Open the directory, in terminal with `cd Medex-Backend`
 
 ### Local DEV
 
@@ -23,6 +23,7 @@ Medex is a B2B marketplace platform for medical procurement where healthcare ins
 - Create a `django.conf` from `django.conf.example`
 - Docker build with `docker build --secret id=django,env=django.conf -t your-tag:dev .`
 - Docker run with `docker run -p 8000:8000 -v .:/app --detach --name "your_name" --env-file django.your-tag:dev`
+- For production, use: `docker run --name "name-of-container" -p 8000:8000 --env-file .env -e DJANGO_CREATE_SUPERUSER=1 tag:latest`
 
 ## About
 
