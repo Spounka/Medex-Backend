@@ -1,5 +1,10 @@
 # Medex
 
+## NOTE
+>
+> [!WARNING]
+> THIS PROJECT Has a [frontend](https://github.com/spounka/medex-frontend.git)
+
 Medex is a B2B marketplace platform for medical procurement where healthcare institutions can request quotations for medicinal products and suppliers can respond with competitive offers. The system provides end-to-end procurement features including RFQ management, digital wallets, invoice generation with PDF rendering, product catalogs, order baskets, and role-based dashboards with analytics for suppliers and administrators.
 
 ## Setup
