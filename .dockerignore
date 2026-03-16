@@ -1,2 +1,5 @@
 .git/
 .venv/
+media/
+uploads/
+db.sqlite3

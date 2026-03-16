@@ -208,7 +208,7 @@
         "model": "advertisement.advertisement",
         "pk": 1,
         "fields": {
-            "thumbnail": null,
+            "thumbnail": "/uploads/advertisements/files/ads.jpeg",
             "category": 1,
             "is_featured": true
         }

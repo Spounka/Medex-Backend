@@ -1,7 +1,8 @@
-from common.utils.file_upload_paths import ads_thumbnail_images_path
-from common.validators.image_extension_validator import image_extension_validator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from common.utils.file_upload_paths import ads_thumbnail_images_path
+from common.validators.image_extension_validator import image_extension_validator
 from product.models import Category
 
 
@@ -21,7 +22,9 @@ class Advertisement(models.Model):
     is_featured = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.thumbnail.url
+        if self.thumbnail:
+            return self.thumbnail.url
+        return "Advertisement"
 
     def save(self, *args, **kwargs):
         if not self.category:

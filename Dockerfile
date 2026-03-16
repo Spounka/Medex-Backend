@@ -11,6 +11,7 @@ RUN python3 manage.py makemigrations --noinput && \
 
 # Dummy Image Assets
 RUN for f in product brand category; do mkdir -p media/"${f}"/images/placeholders/; done
+RUN mkdir -p media/advertisements/files/
 
 RUN unzip -o fixtures/medicinal_asset_pack.zip -d fixtures/ && \
     mv fixtures/brand_images/* media/brand/images/placeholders/ && \
@@ -25,4 +26,5 @@ RUN python3 manage.py loaddata fixtures/min_seed.json && \
 RUN --mount=type=secret,id=django
 
 EXPOSE 8000
+VOLUME [ "/app" ]
 ENTRYPOINT [ "./entrypoint.sh" ]
