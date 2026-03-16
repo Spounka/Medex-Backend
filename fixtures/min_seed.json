@@ -1,0 +1,374 @@
+[
+    {
+        "model": "sites.site",
+        "pk": 1,
+        "fields": {
+            "domain": "localhost:8000",
+            "name": "Localhost"
+        }
+    },
+    {
+        "model": "account.address",
+        "pk": 1,
+        "fields": {
+            "country": "Algeria",
+            "state": "Setif",
+            "city": "Setif",
+            "postal_code": "19000",
+            "address_1": "123 Main Street",
+            "address_2": ""
+        }
+    },
+    {
+        "model": "account.address",
+        "pk": 2,
+        "fields": {
+            "country": "Algeria",
+            "state": "Algiers",
+            "city": "Algiers",
+            "postal_code": "16000",
+            "address_1": "456 Supplier Avenue",
+            "address_2": ""
+        }
+    },
+    {
+        "model": "account.user",
+        "pk": "11111111-1111-1111-1111-111111111111",
+        "fields": {
+            "password": "pbkdf2_sha256$870000$246ffd3bbc4c$vlQoGLozXScku/00XX+JGobCWk+C10FRcUVm9/wEhmc=",
+            "last_login": null,
+            "email": "admin@example.com",
+            "full_name": "Admin User",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "is_supplier": false,
+            "is_buyer": false,
+            "phone": "+213555000001",
+            "billing_address": 1,
+            "shipping_address": 1,
+            "parent": null,
+            "created": "2026-03-14T10:00:00Z",
+            "updated": "2026-03-14T10:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "account.user",
+        "pk": "22222222-2222-2222-2222-222222222222",
+        "fields": {
+            "password": "pbkdf2_sha256$870000$023cbdc8fa85$S+S/xxjqDN4/HIAVnxBDvcsWBDr1TRIhqloAIIuORwo=",
+            "last_login": null,
+            "email": "buyer@example.com",
+            "full_name": "Buyer User",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "is_supplier": false,
+            "is_buyer": true,
+            "phone": "+213555000002",
+            "billing_address": 1,
+            "shipping_address": 1,
+            "parent": null,
+            "created": "2026-03-14T10:05:00Z",
+            "updated": "2026-03-14T10:05:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "account.user",
+        "pk": "33333333-3333-3333-3333-333333333333",
+        "fields": {
+            "password": "pbkdf2_sha256$870000$004df8bdd39b$kqrMXhltPZVA9hSrVWPhATS8FZhSF94gIcowLHV/wjs=",
+            "last_login": null,
+            "email": "supplier@example.com",
+            "full_name": "Supplier User",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "is_supplier": true,
+            "is_buyer": false,
+            "phone": "+213555000003",
+            "billing_address": 2,
+            "shipping_address": 2,
+            "parent": null,
+            "created": "2026-03-14T10:10:00Z",
+            "updated": "2026-03-14T10:10:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "product.category",
+        "pk": 1,
+        "fields": {
+            "name": "generic",
+            "slug": "generic",
+            "is_featured": true,
+            "lft": 1,
+            "rght": 4,
+            "tree_id": 1,
+            "level": 0,
+            "image": "uploads/images/placeholder/placeholder.png",
+            "parent": null
+        }
+    },
+    {
+        "model": "product.category",
+        "pk": 2,
+        "fields": {
+            "name": "electronics",
+            "slug": "electronics",
+            "is_featured": true,
+            "lft": 2,
+            "rght": 3,
+            "tree_id": 1,
+            "level": 1,
+            "image": "uploads/images/placeholder/placeholder.png",
+            "parent": 1
+        }
+    },
+    {
+        "model": "product.brand",
+        "pk": 1,
+        "fields": {
+            "name": "DemoBrand",
+            "slug": "demobrand",
+            "image": "uploads/images/placeholder/placeholder.png"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": "SKU-001",
+        "fields": {
+            "name": "Demo Product One",
+            "description": "A dummy product for local development.",
+            "slug": "sku-001",
+            "price": "1200.00",
+            "sale_price": "999.00",
+            "price_range_min": "900.00",
+            "price_range_max": "1300.00",
+            "stock_quantity": 50,
+            "is_available": true,
+            "image1": null,
+            "image2": null,
+            "image3": null,
+            "image4": null,
+            "created": "2026-03-14T11:00:00Z",
+            "updated": "2026-03-14T11:00:00Z",
+            "brand": 1,
+            "category": 2,
+            "supplier": "33333333-3333-3333-3333-333333333333",
+            "is_returnable": true,
+            "return_deadline": 14,
+            "thumbnail": null
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": "SKU-002",
+        "fields": {
+            "name": "Demo Product Two",
+            "description": "A second dummy product.",
+            "slug": "sku-002",
+            "price": "2500.00",
+            "sale_price": "0.00",
+            "price_range_min": "2400.00",
+            "price_range_max": "2600.00",
+            "stock_quantity": 20,
+            "is_available": true,
+            "image1": null,
+            "image2": null,
+            "image3": null,
+            "image4": null,
+            "created": "2026-03-14T11:05:00Z",
+            "updated": "2026-03-14T11:05:00Z",
+            "brand": 1,
+            "category": 2,
+            "supplier": "33333333-3333-3333-3333-333333333333",
+            "is_returnable": false,
+            "return_deadline": 30,
+            "thumbnail": null
+        }
+    },
+    {
+        "model": "product.privatecategory",
+        "pk": 1,
+        "fields": {
+            "name": "Supplier Internal Picks",
+            "supplier": "33333333-3333-3333-3333-333333333333",
+            "products": [
+                "SKU-001"
+            ]
+        }
+    },
+    {
+        "model": "advertisement.advertisement",
+        "pk": 1,
+        "fields": {
+            "thumbnail": null,
+            "category": 1,
+            "is_featured": true
+        }
+    },
+    {
+        "model": "chat.thread",
+        "pk": 1,
+        "fields": {
+            "updated": "2026-03-14T12:00:00Z",
+            "created": "2026-03-14T12:00:00Z",
+            "first": "22222222-2222-2222-2222-222222222222",
+            "second": "33333333-3333-3333-3333-333333333333"
+        }
+    },
+    {
+        "model": "chat.chatmessage",
+        "pk": 1,
+        "fields": {
+            "message": "Hello, I am interested in your products.",
+            "created": "2026-03-14T12:01:00Z",
+            "is_read": true,
+            "thread": 1,
+            "user": "22222222-2222-2222-2222-222222222222"
+        }
+    },
+    {
+        "model": "chat.chatmessage",
+        "pk": 2,
+        "fields": {
+            "message": "Sure, let me know what you need.",
+            "created": "2026-03-14T12:02:00Z",
+            "is_read": false,
+            "thread": 1,
+            "user": "33333333-3333-3333-3333-333333333333"
+        }
+    },
+    {
+        "model": "opportunity.opportunity",
+        "pk": 1,
+        "fields": {
+            "title": "Need electronic components",
+            "payment_method": "DIR",
+            "status": "O",
+            "user": "22222222-2222-2222-2222-222222222222",
+            "delivery_address": 1,
+            "delivery_date": "2026-04-01T09:00:00Z",
+            "payment_days": "30 days",
+            "opportunity_value": "M",
+            "target_suppliers": [
+                "33333333-3333-3333-3333-333333333333"
+            ],
+            "views": 5,
+            "created": "2026-03-14T12:30:00Z",
+            "updated": "2026-03-14T12:30:00Z"
+        }
+    },
+    {
+        "model": "quote.quoterequest",
+        "pk": 1,
+        "fields": {
+            "created": "2026-03-14T13:00:00Z",
+            "user": "22222222-2222-2222-2222-222222222222",
+            "due_date": "2026-03-25T12:00:00Z",
+            "supplier": "33333333-3333-3333-3333-333333333333"
+        }
+    },
+    {
+        "model": "quote.quoteproduct",
+        "pk": 1,
+        "fields": {
+            "name": "Copper Cable",
+            "quantity": 100,
+            "unit": "meter",
+            "notes": "Industrial grade",
+            "quote": 1
+        }
+    },
+    {
+        "model": "quote.quoteoffer",
+        "pk": 1,
+        "fields": {
+            "notes": "Can be delivered within one week.",
+            "delivery_date": "2026-03-22",
+            "payment_type": "Bank transfer",
+            "created": "2026-03-14T13:30:00Z",
+            "status": "P",
+            "invoice_id": "INV-DEMO-0001",
+            "delivery_address": 1,
+            "quote": 1,
+            "user": "33333333-3333-3333-3333-333333333333"
+        }
+    },
+    {
+        "model": "quote.offerproduct",
+        "pk": 1,
+        "fields": {
+            "name": "Copper Cable",
+            "quantity": 100,
+            "unit": "meter",
+            "product_price": "15.50",
+            "tax": "0.19",
+            "notes": "Bulk pricing applied",
+            "offer": 1
+        }
+    },
+    {
+        "model": "order.orderitem",
+        "pk": 1,
+        "fields": {
+            "quantity": 2,
+            "shipping_status": "OR",
+            "created": "2026-03-14T14:00:00Z",
+            "product": "SKU-001",
+            "user": "22222222-2222-2222-2222-222222222222",
+            "total_price": "2400.00"
+        }
+    },
+    {
+        "model": "order.order",
+        "pk": 1,
+        "fields": {
+            "created": "2026-03-14T14:01:00Z",
+            "is_paid": false,
+            "payment_method": "CASH",
+            "user": "22222222-2222-2222-2222-222222222222",
+            "products": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "order.returnrequest",
+        "pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+        "fields": {
+            "tracking_number": "RET-0001",
+            "status": "AP",
+            "created": "2026-03-14T15:00:00Z",
+            "product": 1,
+            "description": "The received product quality is below expectations.",
+            "reason": "POO",
+            "decline_reason": null,
+            "user": "22222222-2222-2222-2222-222222222222"
+        }
+    },
+    {
+        "model": "wishlist.wishlist",
+        "pk": 1,
+        "fields": {
+            "product": "SKU-002",
+            "user": "22222222-2222-2222-2222-222222222222"
+        }
+    },
+    {
+        "model": "contact.contactmessage",
+        "pk": 1,
+        "fields": {
+            "name": "Local Tester",
+            "email": "tester@example.com",
+            "message": "Testing contact form.",
+            "created": "2026-03-14T16:00:00Z"
+        }
+    }
+]
