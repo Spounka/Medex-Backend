@@ -30,3 +30,12 @@ CORS_ALLOWED_ORIGINS = [
     f"https://{SITE_ORIGIN}",
     f"https://{FRONT_SITE_ORIGIN}",
 ]
+
+
+MEDIA_ROOT = BASE_DIR / "media"
+
+MEDIA_URL = "/uploads/"
+
+STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = "staticfiles"
