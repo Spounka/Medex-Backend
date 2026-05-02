@@ -30,13 +30,14 @@ if [ "${DJANGO_CREATE_SUPERUSER}" = "1" ]; then
 echo "Creating superuser..."
 python manage.py shell <<'PY'
 import os
+from decouple import config
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-email = os.getenv("DJANGO_SUPERUSER_EMAIL")
-password = os.getenv("DJANGO_SUPERUSER_PASSWORD")
-phone = os.getenv("DJANGO_SUPERUSER_PHONE")
-full_name = os.getenv("DJANGO_SUPERUSER_FULL_NAME", "Super Administrator")
+email = config("DJANGO_SUPERUSER_EMAIL", default="", cast=str)
+password = config("DJANGO_SUPERUSER_PASSWORD", default="", cast=str)
+phone = config("DJANGO_SUPERUSER_PHONE", default="", cast=str)
+full_name = config("DJANGO_SUPERUSER_FULL_NAME", default="Super Administrator", cast=str)
 
 print(email, password)
 
