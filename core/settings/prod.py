@@ -11,7 +11,7 @@ FRONT_SITE_ORIGIN = config("FRONT_SITE_ORIGIN", cast=str, default="")
 if not SITE_ORIGIN or not FRONT_SITE_ORIGIN:
     raise RuntimeError("SITE_ORIGIN and FRONT_SITE_ORIGIN not found")
 
-ALLOWED_HOSTS = [SITE_ORIGIN, FRONT_SITE_ORIGIN]
+ALLOWED_HOSTS = [SITE_ORIGIN, FRONT_SITE_ORIGIN, "localhost"]
 CSRF_TRUSTED_ORIGINS = [
     f"https://{SITE_ORIGIN}",
     f"https://{FRONT_SITE_ORIGIN}",
@@ -31,9 +31,8 @@ EMAIL_USE_TLS = True
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3080",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:8000",
+    "http://localhost",
+    "http://127.0.0.1",
     f"https://{SITE_ORIGIN}",
     f"https://{FRONT_SITE_ORIGIN}",
 ]
