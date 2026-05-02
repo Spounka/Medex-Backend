@@ -1,5 +1,5 @@
 .git/
 .venv/
 media/
-uploads/
+staticfiles/
 db.sqlite3
