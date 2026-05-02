@@ -26,7 +26,6 @@ python manage.py shell < fixtures/reassign_catalog_images.py || true
 echo "Collecting Static files"
 python manage.py collectstatic --noinput
 
-if [ "${DJANGO_CREATE_SUPERUSER}" = "1" ]; then
 echo "Creating superuser..."
 python manage.py shell <<'PY'
 import os
@@ -39,8 +38,6 @@ password = config("DJANGO_SUPERUSER_PASSWORD", default="", cast=str)
 phone = config("DJANGO_SUPERUSER_PHONE", default="", cast=str)
 full_name = config("DJANGO_SUPERUSER_FULL_NAME", default="Super Administrator", cast=str)
 
-print(email, password)
-
 if email and password and not User.objects.filter(email=email).exists():
     User.objects.create_superuser(
         email=email,
@@ -52,6 +49,5 @@ if email and password and not User.objects.filter(email=email).exists():
 else:
     print("Superuser skipped.")
 PY
-fi
 
 exec "$@"
