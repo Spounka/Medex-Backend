@@ -37,6 +37,53 @@ CORS_ALLOWED_ORIGINS = [
     f"https://{FRONT_SITE_ORIGIN}",
 ]
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+        "django_server": {
+            "()": "django.utils.log.ServerFormatter",
+            "format": "[{server_time}] {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "django_server",
+            "level": "INFO",
+        },
+        "file_handler": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "logs/debug.log",
+            "formatter": "verbose",
+        },
+        "request_handler": {
+            "level": "WARNING",
+            "class": "logging.FileHandler",
+            "filename": "logs/requests.log",
+            "formatter": "django_server",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file_handler"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "django.request": {
+            "handlers": ["request_handler"],
+            "propagate": True,
+        },
+    },
+}
+
+
 
 MEDIA_ROOT = BASE_DIR / "media"
 
